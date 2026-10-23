@@ -1,0 +1,43 @@
+public class OverflowAndReferenceInvestigator {
+    public static void main(String[] args) {
+
+        // Requirement 1: byte overflow wrapping around
+        byte myByte = 127;
+        System.out.println("Initial byte value: " + myByte);
+        myByte++;
+        System.out.println("After increment myByte++: " + myByte);
+        System.out.println("Unexpected result: -128 due to overflow / wrapping around");
+        System.out.println();
+
+        // Requirement 2: two with new String(), one literal
+        String text1 = "Java";
+        String text2 = new String("Java");
+        String text3 = new String("Java");
+
+        System.out.println("text1 == text2: " + (text1 == text2));
+        // Output: false
+        // WHY: text1 is a literal in String Pool, text2 is created with new in heap. Different locations.
+
+        System.out.println("text1 == text3: " + (text1 == text3));
+        // Output: false
+        // WHY: text1 is in pool, text3 is a new heap object. References don't match.
+
+        System.out.println("text2 == text3: " + (text2 == text3));
+        // Output: false
+        // WHY: Both text2 and text3 used 'new', so they are 2 distinct objects in heap.
+
+        System.out.println("text1.equals(text2): " + text1.equals(text2));
+        System.out.println("text2.equals(text3): " + text2.equals(text3));
+        System.out.println();
+
+        // Requirement 4: array reference shared
+        String[] primaryList = {"Java", "Python", "C++"};
+        String[] secondaryList = primaryList; // shared reference
+
+        secondaryList[1] = "C#"; // modify through second variable
+
+        System.out.println("primaryList[1]: " + primaryList[1]);
+        System.out.println("secondaryList[1]: " + secondaryList[1]);
+        // Both print C# because they point to same memory location
+    }
+}
